@@ -8,6 +8,15 @@ El ERP está diseñado como un **monolito con arquitectura de contenedores** par
 
 ---
 
+## Enlace al Proyecto en Jira
+Puedes acceder al **tablero del proyecto ERP** directamente en Jira con el siguiente enlace:
+
+🔗 **https://samuelp.atlassian.net/?continue=https%3A%2F%2Fsamuelp.atlassian.net%2Fwelcome%2Fsoftware%3FprojectId%3D10000&atlOrigin=eyJpIjoiZDRlYWU3OGU1ZjZkNGZjNmI4MjE3NDU3MmExYzdhNDciLCJwIjoiamlyYS1zb2Z0d2FyZSJ9**
+
+> ⚠️ Nota: Para ver los detalles del proyecto, debes tener acceso a este espacio en Jira.
+
+---
+
 ## Módulos Principales
 
 | Módulo             | Funcionalidad principal |
