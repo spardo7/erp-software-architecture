@@ -1,220 +1,164 @@
 ---
-date: Enero 2023
+date: Febrero 2026
 title: Plantilla ![arc42](images/arc42-logo.png)
 ---
-
-# 
-
-**Acerca de arc42**
-
-arc42, La plantilla de documentación para arquitectura de sistemas y de
-software.
-
-Por Dr. Gernot Starke, Dr. Peter Hruschka y otros contribuyentes.
-
-Revisión de la plantilla: 7.0 ES (basada en asciidoc), Enero 2017
-
-© Reconocemos que este documento utiliza material de la plantilla de
-arquitectura arc42, <https://www.arc42.org>. Creada por Dr. Peter
-Hruschka y Dr. Gernot Starke.
 
 # Introducción y Metas {#section-introduction-and-goals}
 
 ## Vista de Requerimientos {#_vista_de_requerimientos}
 
+El ERP centraliza y automatiza procesos empresariales: Compras, Facturación, Stock/Costos, Activos Fijos, Empleados y EIS.  
+Requisitos principales (Módulo de Compras):
+
+- Registrar nuevas órdenes de compra.  
+- Gestionar proveedores y productos asociados.  
+- Aprobar o rechazar órdenes de compra.  
+- Consultar órdenes de compra y su historial.  
+- Integración con Stock y Facturación para reflejar inventario y costos.
+
 ## Metas de Calidad {#_metas_de_calidad}
+
+- Sistema confiable y disponible 24/7 para usuarios internos.  
+- Respuesta rápida en la SPA (< 2s por operación crítica).  
+- Integridad de datos entre Compras, Stock y Facturación.
 
 ## Partes interesadas (Stakeholders) {#_partes_interesadas_stakeholders}
 
 +-------------+---------------------------+---------------------------+
 | Rol/Nombre  | Contacto                  | Expectativas              |
 +=============+===========================+===========================+
-| *           | *\<Contact-1\>*           | *\<Expectation-1\>*       |
-| \<Role-1\>* |                           |                           |
+| Gestor de Compras | gestor@empresa.com     | Registro y control eficiente de compras |
 +-------------+---------------------------+---------------------------+
-| *           | *\<Contact-2\>*           | *\<Expectation-2\>*       |
-| \<Role-2\>* |                           |                           |
+| Administrador ERP | admin@empresa.com      | Supervisión y reportes centralizados |
++-------------+---------------------------+---------------------------+
+| Empleado | empleado@empresa.com        | Acceso a información de stock y facturas |
 +-------------+---------------------------+---------------------------+
 
 # Restricciones de la Arquitectura {#section-architecture-constraints}
+
+- Backend: Java con Spring Boot (monolito).  
+- Frontend: SPA con React.  
+- Base de datos: PostgreSQL.  
+- API RESTful para comunicación entre frontend y backend.  
+- Contenedores opcionales con Docker para despliegue.  
 
 # Alcance y Contexto del Sistema {#section-context-and-scope}
 
 ## Contexto de Negocio {#_contexto_de_negocio}
 
-**\<Diagrama o Tabla\>**
-
-**\<optionally: Explanation of external domain interfaces\>**
+El ERP permite a usuarios internos (administradores y empleados) gestionar compras, stock, facturación, activos fijos, empleados y KPIs consolidados. Se conecta con proveedores y servicios externos de facturación.
 
 ## Contexto Técnico {#_contexto_técnico}
 
-**\<Diagrama o Tabla\>**
-
-**\<Opcional: Explicación de las interfases técnicas\>**
-
-**\<Mapeo de Entrada/Salida a canales\>**
+El sistema consiste en un frontend SPA, una API monolítica y una base de datos central.  
+![Diagrama de Contexto](./images/c1_context.png)
 
 # Estrategia de solución {#section-solution-strategy}
+
+Se utiliza un enfoque monolítico inicial para simplificar la integración de módulos, con posibilidad de modularización futura. La arquitectura está basada en contenedores (SPA, API, DB).
 
 # Vista de Bloques {#section-building-block-view}
 
 ## Sistema General de Caja Blanca {#_sistema_general_de_caja_blanca}
 
-***\<Diagrama general\>***
+### Aplicación Web (SPA) {#_caja_negra_spa}
 
-Motivación
+Interfaz de usuario para administradores y empleados.  
+Responsable de:  
+- Registrar productos y órdenes de compra.  
+- Consultar stock, facturación y reportes.  
 
-:   *\<Explicación en texto\>*
+Interfase: API RESTful con backend.
 
-Bloques de construcción contenidos
+### API Monolítica {#_caja_negra_api}
 
-:   *\<Desripción de los bloques de construcción contenidos (Cajas
-    negras)\>*
+Lógica de negocio del ERP:  
+- Procesa compras, stock, facturación y activos.  
+- Valida datos de entrada.  
+- Genera reportes consolidados.  
 
-Interfases importantes
+Interfase: REST API para SPA, JDBC para DB.
 
-:   *\<Descripción de las interfases importantes\>*
+### Base de Datos ERP {#_caja_negra_db}
 
-### \<Caja Negra 1\> {#_caja_negra_1}
+Almacena todas las entidades: Productos, Proveedores, Órdenes, Empleados, Activos, Facturación, Stock, KPIs.  
 
-*\<Propósito/Responsabilidad\>*
+Interfase: SQL con API Monolítica.  
 
-*\<Interfase(s)\>*
+## Nivel 2 - Contenedores {#_nivel_2}
 
-*\<(Opcional) Características de Calidad/Performance\>*
+![Diagrama de Contenedores](./images/c2_containers.png)
 
-*\<(Opcional) Ubicación Archivo/Directorio\>*
-
-*\<(Opcional) Requerimientos Satisfechos\>*
-
-*\<(Opcional) Riesgos/Problemas/Incidentes Abiertos\>*
-
-### \<Caja Negra 2\> {#_caja_negra_2}
-
-*\<plantilla de caja negra\>*
-
-### \<Caja Negra N\> {#_caja_negra_n}
-
-*\<Plantilla de caja negra\>*
-
-### \<Interfase 1\> {#_interfase_1}
-
-...​
-
-### \<Interfase m\> {#_interfase_m}
-
-## Nivel 2 {#_nivel_2}
-
-### Caja Blanca *\<bloque de construcción 1\>* {#_caja_blanca_bloque_de_construcción_1}
-
-*\<plantilla de caja blanca\>*
-
-### Caja Blanca *\<bloque de construcción 2\>* {#_caja_blanca_bloque_de_construcción_2}
-
-*\<plantilla de caja blanca\>*
-
-...​
-
-### Caja Blanca *\<bloque de construcción m\>* {#_caja_blanca_bloque_de_construcción_m}
-
-*\<plantilla de caja blanca\>*
-
-## Nivel 3 {#_nivel_3}
-
-### Caja Blanca \<\_bloque de construcción x.1\_\> {#_caja_blanca_bloque_de_construcción_x_1}
-
-*\<plantilla de caja blanca\>*
-
-### Caja Blanca \<\_bloque de construcción x.2\_\> {#_caja_blanca_bloque_de_construcción_x_2}
-
-*\<plantilla de caja blanca\>*
-
-### Caja Blanca \<\_bloque de construcción y.1\_\> {#_caja_blanca_bloque_de_construcción_y_1}
-
-*\<plantilla de caja blanca\>*
+- **SPA**: Interfaz web para usuarios.  
+- **API Monolítica**: Lógica de negocio y reglas.  
+- **Base de Datos**: Almacenamiento de datos persistente.  
 
 # Vista de Ejecución {#section-runtime-view}
 
-## \<Escenario de ejecución 1\> {#_escenario_de_ejecución_1}
+## Escenario: Registrar un Producto {#_escenario_de_registro_producto}
 
--   *\<Inserte un diagrama de ejecución o la descripción del
-    escenario\>*
+Flujo:
 
--   *\<Inserte la descripción de aspectos notables de las interacciones
-    entre los bloques de construcción mostrados en este diagrama.\>*
+1. Gestor rellena formulario en SPA.  
+2. SPA envía POST /api/productos con datos.  
+3. API valida y guarda en DB.  
+4. API retorna ID del producto creado.  
+5. SPA muestra mensaje de éxito y actualiza lista.
 
-## \<Escenario de ejecución 2\> {#_escenario_de_ejecución_2}
-
-## ...​
-
-## \<Escenario de ejecución n\> {#_escenario_de_ejecución_n}
+![Diagrama de Secuencia](./images/sequence_register_product.png)
 
 # Vista de Despliegue {#section-deployment-view}
 
-## Nivel de infraestructura 1 {#_nivel_de_infraestructura_1}
-
-***\<Diagrama General\>***
-
-Motivación
-
-:   *\<Explicación en forma textual\>*
-
-Características de Calidad/Rendimiento
-
-:   *\<Explicación en forma textual\>*
-
-    Mapeo de los Bloques de Construcción a Infraestructura
-
-    :   *\<Descripción del mapeo\>*
-
-## Nivel de Infraestructura 2 {#_nivel_de_infraestructura_2}
-
-### *\<Elemento de Infraestructura 1\>* {#_elemento_de_infraestructura_1}
-
-*\<diagrama + explicación\>*
-
-### *\<Elemento de Infraestructura 2\>* {#_elemento_de_infraestructura_2}
-
-*\<diagrama + explicación\>*
-
-...​
-
-### *\<Elemento de Infraestructura n\>* {#_elemento_de_infraestructura_n}
-
-*\<diagrama + explicación\>*
+- Servidor Linux con Docker.  
+- Contenedores desplegados: SPA (Nginx), API Monolítica, PostgreSQL.  
+- Comunicación interna vía red Docker.  
+- Backup diario y monitoreo de logs.  
 
 # Conceptos Transversales (Cross-cutting) {#section-concepts}
 
-## *\<Concepto 1\>* {#_concepto_1}
+## Seguridad
 
-*\<explicación\>*
+- HTTPS obligatorio.  
+- Autenticación y autorización por roles.  
 
-## *\<Concepto 2\>* {#_concepto_2}
+## Logs y Monitoreo
 
-*\<explicación\>*
-
-...​
-
-## *\<Concepto n\>* {#_concepto_n}
-
-*\<explicación\>*
+- Registro de eventos críticos en API.  
+- Monitoreo de disponibilidad y rendimiento.  
 
 # Decisiones de Diseño {#section-design-decisions}
 
+- Arquitectura monolítica inicial para facilitar integración.  
+- SPA para mejorar experiencia de usuario.  
+- PostgreSQL por su soporte transaccional y consistencia de datos.  
+
 # Requerimientos de Calidad {#section-quality-scenarios}
 
-## Árbol de Calidad {#_árbol_de_calidad}
-
-## Escenarios de calidad {#_escenarios_de_calidad}
+- Disponibilidad 24/7  
+- Tiempo de respuesta < 2s  
+- Integridad de datos entre módulos  
 
 # Riesgos y deuda técnica {#section-technical-risks}
+
+- Posible escalabilidad limitada si el ERP crece mucho (monolito).  
+- Dependencia de PostgreSQL; migración futura requeriría refactor.  
 
 # Glosario {#section-glossary}
 
 +----------------------+-----------------------------------------------+
 | Término              | Definición                                    |
 +======================+===============================================+
-| *\<Término-1\>*      | *\<definicion-1\>*                            |
+| Producto             | Artículo disponible para compra y venta.     |
 +----------------------+-----------------------------------------------+
-| *\<Término-2\>*      | *\<definicion-2\>*                            |
+| Proveedor            | Entidad que suministra productos.            |
++----------------------+-----------------------------------------------+
+| Orden de Compra      | Solicitud de adquisición de productos.       |
++----------------------+-----------------------------------------------+
+| Detalle de Orden     | Línea específica de una orden.               |
++----------------------+-----------------------------------------------+
+| Empleado             | Persona registrada en el ERP.                |
++----------------------+-----------------------------------------------+
+| Activo Fijo          | Bien material o intangible de la empresa.   |
++----------------------+-----------------------------------------------+
+| EIS                  | Módulo de reportes y KPIs estratégicos.     |
 +----------------------+-----------------------------------------------+
