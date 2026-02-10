@@ -1,6 +1,6 @@
 ---
 date: Febrero 2026
-title: Plantilla ![arc42](images/arc42-logo.png)
+title: Proyecto ERP - Grupo X
 ---
 
 # Introducción y Metas {#section-introduction-and-goals}
